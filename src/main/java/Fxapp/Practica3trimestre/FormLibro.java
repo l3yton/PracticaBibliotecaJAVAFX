@@ -78,5 +78,11 @@ public class FormLibro extends GridPane {
 		});
 		this.add(fileChooserBtn, 0, 6);
 
+		Button savebtn = new Button("Guardar");
+		this.add(savebtn, 0, 7);
+
+		Button modificarbtn = new Button("Modificar");
+		this.add(modificarbtn, 1, 7);
+
 	}
 }
