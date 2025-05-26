@@ -57,6 +57,7 @@ public class App extends Application {
 		tListado.setClosable(false);
 
 		FormLibro pformLibro = new FormLibro();
+		ModoEliminar pmodoEliminar = new ModoEliminar();
 
 		tabPes.getTabs().addAll(tformlibro, tmodBorr, tListado);
 
@@ -64,6 +65,7 @@ public class App extends Application {
 		pContenedor.setCenter(tabPes);
 
 		tformlibro.setContent(pformLibro);
+		tmodBorr.setContent(pmodoEliminar);
 
 		Scene scene = new Scene(pContenedor, 800, 600);
 		stage.setScene(scene);

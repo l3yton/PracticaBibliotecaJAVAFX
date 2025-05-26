@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.scene.control.ComboBox;
+
 public class LibroDAO {
 
 	/**
@@ -92,5 +94,25 @@ public class LibroDAO {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+
+	public static ComboBox<String> cargarLibros(Connection con) {
+		ComboBox<String> comboBoxLibros = new ComboBox<>();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT titulo FROM libro");
+
+			while (rs.next()) {
+				String titulo = rs.getString("titulo");
+				comboBoxLibros.getItems().add(titulo);
+			}
+
+			return comboBoxLibros;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return comboBoxLibros; // Devuelve el ComboBox vacío en caso de error
+		}
 	}
 }
