@@ -2,6 +2,7 @@ package Fxapp.Model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -10,47 +11,55 @@ public class UtilsBD {
 	/**
 	 * Conecta con la BD
 	 * 
-	 * @return
+	 * @return Objeto Connection si la conexión es exitosa, null en caso contrario.
 	 */
 	public static Connection ConectarBD() {
 		try {
-
-			// Comprueba que tengamos el driver para conectarnos a la bd mysql
-			// Antes de conectarnos en si, si no esta no pasa nada
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			/*
-			 * Para conectarnos necesitamos 5 parametros ip o nombre del host donde esta la
-			 * bd, en nuestro caso localhost puerto por el que nos conectamos,en mysql 3306
-			 * usuario y contraseña nombre del esquema de la bd en nuestro caso como dijo
-			 * mario es frigopie
-			 */
-			Dotenv dotenv = Dotenv.configure().filename(".env") // instead of '.env', use 'env'
-					.load();
+			Dotenv dotenv = Dotenv.configure().filename(".env").load();
 
 			String usuario = dotenv.get("DBUSER");
 			String password = dotenv.get("DBPASSWORD");
 			String puerto = dotenv.get("DBPORT");
 			String host = dotenv.get("DBHOST");
 			String dbname = dotenv.get("DBNAME");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "daw2024");
+
+			// Se usa DriverManager.getConnection con los parámetros obtenidos de .env
+			Connection con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + puerto + "/" + dbname, usuario,
+					password);
 			if (con != null) {
-				System.out.println("El usuario de BD es " + usuario);
-				System.out.println("Conexion establezida sin errores");
-
+				System.out.println("Conexión establecida sin errores.");
 			}
-
-			// Una vez realizada la conexion, la devolvemos
 			return con;
 
-		} catch (Exception e) {
-			// El printstacktrace muesta el errror de la excepcion si ocurre el error
-			System.out.println("Erro de conexion");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: Driver JDBC no encontrado.");
 			e.printStackTrace();
-
+		} catch (SQLException e) {
+			System.err.println("Error de conexión a la base de datos.");
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.err.println("Error inesperado al conectar con la base de datos.");
+			e.printStackTrace();
 		}
-
 		return null;
 	}
 
+	/**
+	 * Cierra la conexión a la BD
+	 * 
+	 * @param con La conexión a cerrar.
+	 */
+	public static void DesconectarBD(Connection con) {
+		if (con != null) {
+			try {
+				con.close();
+				System.out.println("Conexión cerrada.");
+			} catch (SQLException e) {
+				System.err.println("Error al cerrar la conexión a la base de datos.");
+				e.printStackTrace();
+			}
+		}
+	}
 }
