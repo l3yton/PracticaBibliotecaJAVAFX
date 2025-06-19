@@ -6,11 +6,11 @@ module Fxapp.Practica3trimestre {
 
 	// Abre el paquete principal para que JavaFX FXML y otros módulos puedan acceder
 	// a sus clases
-	opens Fxapp.Practica3trimestre to javafx.fxml, javafx.graphics;
+	opens Fxapp.AppBiblioteca to javafx.fxml, javafx.graphics;
 
 	// ¡Esta es la línea CRÍTICA para tu error!
 	// Abre el paquete Fxapp.Model para que javafx.base (donde está
 	// PropertyValueFactory)
 	// pueda acceder a las propiedades de LibroDO usando reflexión.
-	opens Fxapp.Model to javafx.base;
+	opens Fxapp.LibroBD to javafx.base;
 }

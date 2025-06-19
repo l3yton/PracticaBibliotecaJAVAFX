@@ -1,4 +1,4 @@
-package Fxapp.Practica3trimestre;
+package Fxapp.AppBiblioteca;
 
 public class SystemInfo {
 
